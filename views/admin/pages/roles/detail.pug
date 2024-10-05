@@ -1,0 +1,31 @@
+extends ../../layout/default.pug
+
+block main 
+    if (data)
+        div(class="form-group")
+            label(for="title") Tiêu Đề
+            input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    required
+                    value=data.title
+                )
+        div(class="form-group")
+                label(for="desc") Mô Tả
+                textarea(
+                    class="form-control "
+                    id="desc"
+                    name="description"
+                    rows="5"
+                ) #{data.description}
+                
+        div(class="form-group")
+            a(
+                href=`${prefixAdmin}/roles/edit/${data.id}`
+                class="btn btn-warning"
+            ) Chỉnh Sửa
+    else 
+        p Không Tìm Thấy Bản Ghi
+    

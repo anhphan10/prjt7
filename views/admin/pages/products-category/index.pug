@@ -1,0 +1,68 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/table-tree.pug
+include ../../mixins/pagination.pug
+include ../../mixins/search.pug
+block main
+    +alert-error(5000)
+    +alert-success(3000)
+    if (role.permissions.includes("product-category_view"))
+        h1 Danh Mục Sản Phẩm
+        .card.mb-3 
+            .card-header Tìm Kiếm 
+            .card-boy
+                .row
+                    .col-6
+                        +search(keyword)    
+                
+        
+        
+        .card.mb-3
+            .card-header Danh Sách
+            .card-body
+                .row
+                    .col-8
+                    .col-4
+                        if (role.permissions.includes("product-category_create"))
+                            a(
+                                href= `${prefixAdmin}/products-category/create`
+                                class= "btn btn-outline-success"
+                            ) + Thêm Mới
+                if records && records.length
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    ) 
+                        thead 
+                            tr  
+                                th
+                                    input(type="checkbox" name="checkall")
+                                th STT 
+                                th Hình Ảnh 
+                                th Tiêu Đề
+                                th Vị Trí
+                                th Trạng Thái 
+                                th Hành Động
+                        tbody
+                            +table-tree(records)
+                            
+                else
+                    p Không có sản phẩm nào để hiển thị.
+    
+        
+        form(
+            action="" 
+            method="POST"
+            id="form-delete-item"
+            data-path=`${prefixAdmin}/products-category/delete`
+        )
+
+        form(
+            action="" 
+            method="POST"
+            id="form-change-status"
+            data-path=`${prefixAdmin}/products-category/change-status`
+        )  
+
+        
+        script(src="/admin/js/products2.js") 

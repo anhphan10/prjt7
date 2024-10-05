@@ -1,0 +1,120 @@
+/* Container */
+.container.my-5 {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Heading */
+h1.text-center {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333333;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Labels */
+.form-group label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555555;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Form Inputs */
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input Focus Effect */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Submit Button */
+.btn-primary {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Button Hover Effect */
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0px 4px 10px rgba(0, 91, 179, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container.my-5 {
+        padding: 1.5rem;
+    }
+
+    h1.text-center {
+        font-size: 1.5rem;
+    }
+}
+
+[show-alert]{
+    position: fixed;
+    top: 70;
+    right: 15;
+    z-index: 9999;
+}
+
+[show-alert].alert-hidden{
+    animation-name: alert-hidden;
+    animation-duration: 0,3s;
+    animation-fill-mode: both;
+}
+
+@keyframes  alert-hidden{
+    from{
+        right: 15px;
+    }
+    to{
+        right: -100%;
+        display: none;
+    }
+}
+
+[show-alert] [close-alert] {
+    background: #ffffffc4;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 50%;
+    cursor: pointer;;
+}
+
+.image-preview{
+    width: 150px;
+    height: auto;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.image-preview[src=""]{
+    display: none;
+}
