@@ -21,24 +21,22 @@ module.exports.index = async (req, res) => {
 //[Get]/products/:slug
 module.exports.detail = async (req, res) => {
   try {
-    const find = {
-      deleted: false,
-      slug: req.params.slugProduct,
-      status: "active"
-    };
+   const find = {
+    deleted : false,
+    slug: req.params.slugProduct,
+    status: "active"
+   }
 
-    const product = await Product.findOne(find)
-    if(product.product_category_id){
-      const category = await productCategory.findOne({
-        _id :  product.product_category_id,
-        status: "active",
-        deleted: false
-      })
-      product.category = category
-    }
-    
-    product.priceNew = producthelper.priceNewProduct(product)
-    
+   const product = await Product.findOne(find);
+   if(product.product_category_id){
+    const category = await productCategory.findOne({
+         _id : product.product_category_id,
+         deleted: false
+    })
+    product.category = category
+   }
+   
+   product.priceNew = producthelper.priceNewProduct(product);
 
 
     res.render("client/pages/products/detail", {
@@ -60,10 +58,10 @@ module.exports.category = async (req, res) => {
     deleted: false
   })
 
- 
 
-    const listSubCategory = await productCategoryHelper.getSubCategory(category.id);
-    const listSubCategoryId = listSubCategory.map(item => item.id);
+
+  const listSubCategory = await productCategoryHelper.getSubCategory(category.id);
+  const listSubCategoryId = listSubCategory.map(item => item.id);
 
 
 
