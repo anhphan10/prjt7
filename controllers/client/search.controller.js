@@ -3,7 +3,7 @@ const productsHelper = require("../../helpers/product")
 //[Get]/search/
 module.exports.index = async(req,res)=>{
     const keyword = req.query.keyword;
-    let newProduct = [];
+    let newProduct = []; 
     if(keyword){
         const keywordRegex = new RegExp(keyword , "i");
 
