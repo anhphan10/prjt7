@@ -44,7 +44,6 @@ module.exports.addPost = async (req, res) => {
     const cart = await Cart.findOne({
         _id: cartId
     });
-    console.log(cart);
 
 
     const existProductInCart = cart.products.find(item => item.product_id == productId);
@@ -100,5 +99,24 @@ module.exports.delete = async (req, res)=>{
     )
     
     req.flash("success" , "Đã Xóa Thành Công Sản Phẩm Khỏi Giỏ Hàng");
+    res.redirect("back");
+}
+//[Get]/cart/update/:productId/:quantity
+module.exports.update = async (req, res)=>{
+    const cartId = req.cookies.cartId;
+    const productId = req.params.productId;
+    const quantity = req.params.quantity;
+    await Cart.updateOne
+    (
+        {
+            _id : cartId,
+            'products.product_id': productId
+        },
+        {
+           'products.$.quantity': quantity
+        }
+    )
+    
+    req.flash("success" , "Đã Cập Nhật Số Lượng");
     res.redirect("back");
 }
