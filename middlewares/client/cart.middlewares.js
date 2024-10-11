@@ -13,7 +13,7 @@ module.exports.cartId = async (req ,res , next) =>{
     }
     else
     {
-        console.log(this.cartId);
+        // console.log(this.cartId);
         //Khi đã có giỏ hàng
         const cart = await Cart.findOne({
             _id: req.cookies.cartId
