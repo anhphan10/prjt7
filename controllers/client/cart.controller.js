@@ -35,10 +35,8 @@ module.exports.index = async (req, res) => {
 module.exports.addPost = async (req, res) => {
     const cartId = req.cookies.cartId;
     const productId = req.params.productId;
-
     const quantity = parseInt(req.body.quantity);
 
-    console.log(cartId);
 
 
     const cart = await Cart.findOne({
@@ -94,7 +92,7 @@ module.exports.delete = async (req, res)=>{
             _id: cartId
         },
         {
-            "$pull": {products: {"product_id": productId}}
+            "$pull": {products: {"product_id":productId}}
         }
     )
     

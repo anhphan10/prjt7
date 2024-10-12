@@ -33,6 +33,7 @@ module.exports.index = async (req, res) => {
 //[Post]/checkout/order
 module.exports.order = async (req, res) => {
     const cartId = req.cookies.cartId;
+    
     const userInfo = req.body;
     const cart = await Cart.findOne({
         _id: cartId
