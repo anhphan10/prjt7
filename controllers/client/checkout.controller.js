@@ -77,10 +77,10 @@ module.exports.order = async (req, res) => {
 
     res.redirect(`/checkout/success/${order.id}`)
 
-} 
+}
 
 //[Get]/checkout/success/:id
-module.exports.success = async (req, res)=>{
+module.exports.success = async (req, res) => {
     // console.log(req.params.orderId);
     const order = await Order.findOne({
         _id: req.params.orderId
@@ -91,12 +91,12 @@ module.exports.success = async (req, res)=>{
         }).select("title thumbnail");
         product.productInfo = productInfo;
         product.priceNew = productHelper.priceNewProduct(product);
-        product.totalPrice = product.priceNew * product.quantity; 
+        product.totalPrice = product.priceNew * product.quantity;
     }
 
-    order.totalPrice = order.products.reduce((sum , item ) => sum + item.totalPrice,0);
-    res.render("client/pages/checkout/success",{
-        pageTitle:"Đặt Hàng Thành Công",
-        order:order
+    order.totalPrice = order.products.reduce((sum, item) => sum + item.totalPrice, 0);
+    res.render("client/pages/checkout/success", {
+        pageTitle: "Đặt Hàng Thành Công",
+        order: order
     })
 }
