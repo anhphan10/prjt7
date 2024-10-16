@@ -79,7 +79,7 @@ module.exports.order = async (req, res) => {
 
 }
 
-//[Get]/checkout/success/:id
+//[Get]/checkout/success/:orderId
 module.exports.success = async (req, res) => {
     // console.log(req.params.orderId);
     const order = await Order.findOne({
