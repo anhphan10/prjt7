@@ -23,7 +23,7 @@ module.exports.index = async (req, res) => {
 
         }
     }
-    cart.totalPrice = cart.products.reduce((sum, item)=> sum + item.totalPrice,0)
+    cart.totalPrice = cart.products.reduce((sum, item) => sum + item.totalPrice, 0)
 
     res.render("client/pages/cart/index", {
         pageTitle: "Giỏ Hàng",
@@ -83,38 +83,36 @@ module.exports.addPost = async (req, res) => {
 }
 
 //[Get]/cart/delete/:productId
-module.exports.delete = async (req, res)=>{
+module.exports.delete = async (req, res) => {
     const cartId = req.cookies.cartId;
     const productId = req.params.productId;
-    await Cart.updateOne
-    (
+    await Cart.updateOne(
         {
             _id: cartId
         },
         {
-            "$pull": {products: {"product_id":productId}}
+            "$pull": { products: { 'product_id': productId } }
         }
     )
-    
-    req.flash("success" , "Đã Xóa Thành Công Sản Phẩm Khỏi Giỏ Hàng");
+    req.flash("success", "Xóa Thành Công Sản Phẩm Khỏi Giỏ Hàng");
     res.redirect("back");
 }
 //[Get]/cart/update/:productId/:quantity
-module.exports.update = async (req, res)=>{
+module.exports.update = async (req, res) => {
     const cartId = req.cookies.cartId;
     const productId = req.params.productId;
     const quantity = req.params.quantity;
     await Cart.updateOne
-    (
-        {
-            _id : cartId,
-            'products.product_id': productId
-        },
-        {
-           'products.$.quantity': quantity
-        }
-    )
-    
-    req.flash("success" , "Đã Cập Nhật Số Lượng");
+        (
+            {
+                _id: cartId,
+                'products.product_id': productId
+            },
+            {
+                'products.$.quantity': quantity
+            }
+        )
+
+    req.flash("success", "Đã Cập Nhật Số Lượng");
     res.redirect("back");
 }
