@@ -72,11 +72,7 @@ module.exports.order = async (req, res) => {
             products: []
         }
     )
-
-
-
     res.redirect(`/checkout/success/${order.id}`)
-
 }
 
 //[Get]/checkout/success/:orderId
