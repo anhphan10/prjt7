@@ -1,5 +1,7 @@
 const md5 = require("md5")
 const User = require("../../models/user.model")
+const ForgotPassword = require("../../models/forgot-password.model")
+const generateHelper = require("../../helpers/generate")
 //[Get]user/register
 module.exports.register = async(req,res)=>{
     res.render("client/pages/user/register",{
@@ -60,9 +62,72 @@ module.exports.loginPost = async (req,res) => {
 
 
 }
-
 //[get]user/logout
 module.exports.logout = async (req,res) => {
   res.clearCookie("tokenUser");
   res.redirect("/");
+}
+//[get]/user/password/forgot
+module.exports.forgotPassword = async (req,res) => {
+    res.render("client/pages/user/forgot-password",{
+        pageTitle:"Lấy Lại Mật Khẩu"
+    })
+}
+//[post]/user/password/forgot
+module.exports.forgotPasswordPost = async(req, res)=>{
+ const email = req.body.email;
+ const user = await User.findOne({
+    email: email,
+    deleted:false
+ })
+ if(!user){
+    req.flash("error", "Email Không Tồn Tại")
+    res.redirect("back");
+    return;
+ }
+ //Tạo Mã OTP Và Lưu Thông Tin Vào Collection
+ const otp = generateHelper.generateRandomNumber(8);
+ const objectForgotPassword = {
+    email:email,
+    otp:otp,
+    expireAt: Date.now()
+ };
+const forgotPassword = new ForgotPassword(objectForgotPassword);
+await forgotPassword.save(); 
+
+ //Gửi Mã OTP qua email cho người dùng
+ res.redirect(`/user/password/otp?email=${email}`)
+}
+//[Get]user/password/otp
+module.exports.otpPassword = async (req, res)=>{
+    const email = req.query.email;
+    res.render("client/pages/user/otp-password",{
+        pageTitle:"Nhập Mã OTP",
+        email:email
+    })
+}
+//[Post]/user/password/otp
+module.exports.otpPasswordPost = async (req, res)=>{
+  const email = req.body.email;
+  const otp = req.body.otp;
+  
+  console.log({
+    email,
+    otp
+  })
+  const result = await ForgotPassword.findOne({
+    email:email,
+    otp:otp
+  });
+  console.log(result);
+  if(!result){
+    req.flash("error","otp không hợp lệ");
+    res.redirect("back");
+    return;
+  }
+  const user = await User.findOne({
+    email: email
+  })
+  res.cookie("tokenUser",user.tokenUser);
+  res.redirect("/user/password/reset");
 }

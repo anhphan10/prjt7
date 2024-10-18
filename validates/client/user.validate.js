@@ -31,3 +31,12 @@ module.exports.loginPost = (req , res , next) => {
     next();
 }
 
+module.exports.forgotPassWordPost = (req,res,next)=>{
+    if(!req.body.email){
+        req.flash("error" , "Không Được Để Trống Email!");
+        res.redirect("back");
+        return;   
+    }
+    next()
+}
+
