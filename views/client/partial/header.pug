@@ -34,8 +34,12 @@ header.header
                             a(href=pathProduct) Sản Phẩm
                             +sub-menu(layoutProductsCategory,pathProduct)  
                         li 
-                            a(href="/cart") Giỏ Hàng (#{miniCart ? miniCart.totalQuantity : "0"})                 
-                        li 
-                            a(href="/user/register") Đăng Ký  
-                        li 
-                            a(href="/user/login") Đăng Nhập                
+                            a(href="/cart") Giỏ Hàng (#{miniCart ? miniCart.totalQuantity : "0"})   
+                        if (user)
+                            li 
+                                a(href="/user/logout") Đăng Xuất 
+                        else              
+                            li 
+                                a(href="/user/register") Đăng Ký  
+                            li 
+                                a(href="/user/login") Đăng Nhập                
