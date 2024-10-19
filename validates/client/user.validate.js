@@ -40,3 +40,24 @@ module.exports.forgotPassWordPost = (req,res,next)=>{
     next()
 }
 
+module.exports.resetPasswordPost = (req,res,next)=>{
+   if(!req.body.password){
+    req.flash("error", `Mật Khẩu Không Được Để Trống`);
+    res.redirect("back");
+    return;
+   }
+
+   if(!req.body.confirmPassword){
+    req.flash("error",`Vui Lòng Xác Nhận Lại Mật Khẩu`);
+    res.redirect("back");
+    return;
+   }
+   if(req.body.password!=req.body.confirmPassword){
+    req.flash("error",`Xác Nhận Mật Khẩu Không Trùng Khớp`);
+    res.redirect("back");
+    return;
+   }
+
+    next()
+}
+

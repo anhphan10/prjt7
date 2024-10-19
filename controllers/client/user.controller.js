@@ -2,6 +2,7 @@ const md5 = require("md5")
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const generateHelper = require("../../helpers/generate")
+const sendMailHelper = require("../../helpers/sendmail")
 //[Get]user/register
 module.exports.register = async(req,res)=>{
     res.render("client/pages/user/register",{
@@ -96,6 +97,9 @@ const forgotPassword = new ForgotPassword(objectForgotPassword);
 await forgotPassword.save(); 
 
  //Gửi Mã OTP qua email cho người dùng
+ const subject = "Mã OTP Để Xác Minh Lấy Lại Mật Khẩu";
+ const html=`Mã OTP Lấy Lại Mật Khẩu Là <b>${otp}</b>.Thời Gian Sử Dụng Là 5 Phút.Lưu ý Không Được Để Lộ Mã OTP`;
+ sendMailHelper.sendmail(email,subject,html);
  res.redirect(`/user/password/otp?email=${email}`)
 }
 //[Get]user/password/otp
@@ -110,16 +114,11 @@ module.exports.otpPassword = async (req, res)=>{
 module.exports.otpPasswordPost = async (req, res)=>{
   const email = req.body.email;
   const otp = req.body.otp;
-  
-  console.log({
-    email,
-    otp
-  })
   const result = await ForgotPassword.findOne({
     email:email,
     otp:otp
   });
-  console.log(result);
+//   console.log(result);
   if(!result){
     req.flash("error","otp không hợp lệ");
     res.redirect("back");
@@ -130,4 +129,23 @@ module.exports.otpPasswordPost = async (req, res)=>{
   })
   res.cookie("tokenUser",user.tokenUser);
   res.redirect("/user/password/reset");
+}
+
+//[Get]user/password/reset
+module.exports.resetPassword = async (req, res)=>{
+    res.render("client/pages/user/reset-password",{
+        pageTitle:"Đổi Mật Khẩu"
+    })
+}
+
+//[Post]user/password/reset
+module.exports.resetPasswordPost = async (req, res)=>{
+    const password = req.body.password;
+    const tokenUser = req.cookies.tokenUser;
+    await User.updateOne({
+        tokenUser:tokenUser
+    },{
+        password : md5(password)
+    })
+    res.redirect("/");
 }
