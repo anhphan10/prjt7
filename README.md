@@ -26,4 +26,4 @@ Access http://localhost:1234 to open the user interface
 
 ## Example
 
-[Deploy on Vercel](https://product-management-m4jen6jlm-duong-phan-anhs-projects.vercel.app)
+[Deploy on Vercel](https://prjt7.vercel.app/)
