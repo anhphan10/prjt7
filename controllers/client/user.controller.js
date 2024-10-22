@@ -1,4 +1,5 @@
 const md5 = require("md5")
+const bcrypt = require("bcrypt");
 const User = require("../../models/user.model")
 //[Get]user/register
 module.exports.register = async(req,res)=>{
@@ -8,17 +9,19 @@ module.exports.register = async(req,res)=>{
 }
 //[Post]user/register
 module.exports.registerPost = async (req,res)=>{
-    const exisEmail = await User.findOne({
+    const saltRounds = 10;
+    const didEmailExist = await User.findOne({
         email:req.body.email,
         deleted: false
     });
-    if(exisEmail){
+    if(didEmailExist){
         req.flash("error" , "Email Đã Tồn Tại!");
         res.redirect("back");
         return;
     }
-    req.body.password = md5(req.body.password)
-    
+    req.body.password = await bcrypt.hash(req.body.password , saltRounds);
+    console.log(req.body.password);
+  
     const user = new User(req.body);
     await user.save();
     res.cookie("tokenUser" , user.tokenUser);
