@@ -15,6 +15,7 @@ module.exports.registerPost = (req , res , next) => {
         return;   
     }
     next();
+<<<<<<< HEAD
 }
 
 module.exports.loginPost = (req , res , next) => {
@@ -61,3 +62,6 @@ module.exports.resetPasswordPost = (req,res,next)=>{
     next()
 }
 
+=======
+}
+>>>>>>> main
