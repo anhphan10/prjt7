@@ -41,12 +41,12 @@ module.exports.loginPost = async(req, res)=>{
         email: email,
         deleted:false
     });
-    const userPassword = user.password;
     if(!user){
         req.flash("error" ,"Email Không Tồn Tại!");
         res.redirect("back");
         return;
     }
+    const userPassword = user.password;
     const check = await bcrypt.compare(password,userPassword);
     if(!check){
         req.flash("error" ," Sai Mật Khẩu!");
