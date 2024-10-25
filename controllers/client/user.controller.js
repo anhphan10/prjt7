@@ -1,7 +1,6 @@
 const md5 = require("md5")
 const bcrypt = require("bcrypt");
 const User = require("../../models/user.model")
-const saltRounds = 10;
 //[Get]user/register
 module.exports.register = async(req,res)=>{
     res.render("client/pages/user/register",{
@@ -10,12 +9,13 @@ module.exports.register = async(req,res)=>{
 }
 //[Post]user/register
 module.exports.registerPost = async (req,res)=>{
+    const saltRounds = 10;
     const didEmailExist = await User.findOne({
         email:req.body.email,
         deleted: false
     });
     if(didEmailExist){
-        req.flash("error" , "Email Đã Tồn Tại!");
+        req.flash("error" , "Không Tìm Thấy Email!");
         res.redirect("back");
         return;
     }
@@ -42,14 +42,13 @@ module.exports.loginPost = async(req, res)=>{
         deleted:false
     });
     if(!user){
-        req.flash("error" ,"Email Không Tồn Tại!");
+        req.flash("error" ,"Không Tìm Thấy Email!");
         res.redirect("back");
         return;
     }
-    const userPassword = user.password;
-    const check = await bcrypt.compare(password,userPassword);
+    const check = await bcrypt.compare(password,user.password);
     if(!check){
-        req.flash("error" ," Sai Mật Khẩu!");
+        req.flash("error" ,"Không Tìm Thấy Mật Khẩu!");
         res.redirect("back");
         return;
     }
