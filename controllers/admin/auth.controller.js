@@ -1,6 +1,7 @@
 const systemConfig = require("../../config/system");
 const md5 = require("md5");
-const Account = require("../../models/account.model")
+const Account = require("../../models/account.model");
+const bcrypt = require("bcrypt")
 module.exports.login = async (req, res) => {
     if(req.cookies.token){
        res.redirect(`${systemConfig.preFixAdmin}/dashboard`)
@@ -26,8 +27,8 @@ module.exports.loginPost = async (req, res) => {
         return;
     }
     
-    if(md5(password) != user.password){
-        req.flash("error" , "Sai Mật Khẩu")
+    if(! await bcrypt.compare(password,user.password)){
+        req.flash("error","Không Tìm Thấy Mật Khẩu");
         res.redirect("back");
         return;
     }

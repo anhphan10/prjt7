@@ -1,5 +1,7 @@
 const Account = require("../../models/account.model");
 const md5 = require("md5");
+const bcrypt = require("bcrypt")
+const systemConfig = require("../../config/system")
 
 //[Get] admin/my-account
 module.exports.index = async (req, res) => {
@@ -39,4 +41,25 @@ module.exports.editPatch = async (req, res) => {
     }
     res.redirect("back");
 };
+//[Get]admin/my-account/password/reset
+module.exports.resetPassword = async (req,res)=>{
+    res.render("admin/pages/my-account/resetpassword",{
+        pageTitle:"Đổi Mật Khẩu"
+    })
+}
+//[Post]admin/my-account/password/reset
+module.exports.resetPasswordPost = async (req,res)=>{
+   const saltRound = 10 ;
+   req.body.password = await bcrypt.hash(req.body.password,saltRound);
+   await Account.updateOne(
+    {
+        token:req.cookies.token
+    },
+    {
+        password: req.body.password
+    }
+    )
+    req.flash("success","Đổi Mật Khẩu Thành Công");
+    res.redirect(`${systemConfig.preFixAdmin}/dashboard`);
+}
 

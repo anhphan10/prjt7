@@ -25,7 +25,13 @@ block main
     if (role.title)
         p Phân Quyền: <b>#{role.title}</b>
     
-    a(
-        href=`${prefixAdmin}/my-account/edit`
-        class="btn btn-primary"
-    ) Chỉnh Sửa Thông Tin Cá Nhân
+    div
+        a(
+            href=`${prefixAdmin}/my-account/edit`
+            class="btn btn-primary"
+        ) Chỉnh Sửa Thông Tin Cá Nhân
+        br
+        a(
+            href=`${prefixAdmin}/my-account/password/reset`
+            class="btn btn-dark"
+        ) Đổi Mật Khẩu
