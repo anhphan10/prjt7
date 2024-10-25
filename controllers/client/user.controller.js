@@ -1,6 +1,8 @@
 const md5 = require("md5")
 const bcrypt = require("bcrypt");
 const User = require("../../models/user.model")
+const generateHelper = require("../../helpers/generate")
+const ForgotPassword = require("../../models/forgot-password.model")
 //[Get]user/register
 module.exports.register = async(req,res)=>{
     res.render("client/pages/user/register",{
@@ -65,3 +67,84 @@ module.exports.logout = async(req,res)=>{
     res.clearCookie("tokenUser");
     res.redirect("/");
 }
+//[Get]/user/password/forgot
+module.exports.forgotPassword = async (req,res)=>{
+    res.render("client/pages/user/forgot-password",{
+        pageTitle:"Lấy Lại Mật Khẩu"
+    })
+}
+//[Post]/user/password/forgot
+module.exports.forgotPasswordPost = async (req,res)=>{
+    const email = req.body.email;
+    const user = await User.findOne(
+        {
+            email: email,
+            deleted:false
+        }
+    )
+    if(!user){
+        req.flash("error" , "Không Tìm Thấy Email");
+        res.redirect("back");
+        return;
+    }
+    //Tạo OTP lưu Vào Collection
+    const otp = generateHelper.generateRandomNumber(8);
+    const objectForgotPassword = {
+        email:email,
+        otp:otp,
+        expireAt:Date.now()
+    }
+    const forgotPassword = new ForgotPassword(objectForgotPassword);
+    await forgotPassword.save();
+    res.redirect(`/user/password/otp?email=${email}`)
+}
+//[Get]/user/password/otp
+module.exports.otpPassword = async (req,res)=>{
+    const email = req.query.email;
+    res.render("client/pages/user/otp-password",{
+        pageTitle:"Nhập Mã OTP",
+        email:email
+    })
+}
+//[Get]/user/password/otp
+module.exports.otpPasswordPost = async (req,res)=>{
+    const email = req.body.email;
+    const otp = req.body.otp;
+    const result = await ForgotPassword.findOne({
+        email:email,
+        otp:otp
+    })
+    if(!result){
+        req.flash("error","OTP Không Hợp Lệ");
+        res.redirect("back");
+        return;
+    }
+    const user = await User.findOne({
+        email:email,
+        deleted:false
+    })
+    res.cookie("tokenUser", user.tokenUser);
+    res.redirect("/user/password/reset");
+}
+//[Get]/user/password/reset
+module.exports.resetPassword = async (req,res) => {
+    res.render("client/pages/user/reset-password",{
+        pageTitle:"Đổi Mật Khẩu"
+    })
+}
+//[Post]/user/password/reset
+module.exports.resetPasswordPost = async (req,res) => {
+    req.body.password = await bcrypt.hash(req.body.password,10)
+    const tokenUser = req.cookies.tokenUser;
+    await User.updateOne(
+        {
+            tokenUser:tokenUser
+        },
+        {
+            password:req.body.password
+        }
+    )
+    res.redirect("/");
+}
+
+
