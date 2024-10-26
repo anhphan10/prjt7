@@ -88,7 +88,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
         return;
     }
     //Tạo OTP lưu Vào Collection
-    const otp = generateHelper.generateRandomNumber(8)
+    const otp = generateHelper.getSecureRandomNumbers()
     const objectForgotPassword = {
         email: email,
         otp: otp,
