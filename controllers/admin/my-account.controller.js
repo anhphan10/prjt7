@@ -50,17 +50,13 @@ module.exports.resetPassword = async (req, res) => {
 //[Post]admin/my-account/password/reset
 module.exports.resetPasswordPost = async (req, res) => {
     const saltRound = 10;
-    req.body.password = await bcrypt.hash(req.body.password, saltRound);
     const user = await Account.findOne(
         {
-        token: req.cookies.token,
+            token: req.cookies.token
         },
-        {
-        password: req.body.password
-        }
-
     )
-    if (!user) {
+    if(!await bcrypt.compare(req.body.password,user.password)) {
+
         req.flash("error", "Mật Khẩu Cũ Không Chính Xác");
         res.redirect("back");
         return;
