@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/user.model")
 const generateHelper = require("../../helpers/generate")
 const ForgotPassword = require("../../models/forgot-password.model")
+const sendMailHelper = require("../../helpers/sendMail")
 //[Get]user/register
 module.exports.register = async (req, res) => {
     res.render("client/pages/user/register", {
@@ -96,6 +97,13 @@ module.exports.forgotPasswordPost = async (req, res) => {
     }
     const forgotPassword = new ForgotPassword(objectForgotPassword);
     await forgotPassword.save();
+    //Gửi OTP Qua Email Của Người Dùng
+    const subject = `Mã OTP xác minh lấy lại mật khẩu`;
+    const html = `
+        Mã OTP Xác Minh Lấy Lại Mật Khẩu Là <b>${otp}</b>.Lưu Ý Không Được Để Lộ Mã OTP
+    `;
+    sendMailHelper.sendMail(email,subject,html);
+    //end
     res.redirect(`/user/password/otp?email=${email}`)
 }
 //[Get]/user/password/otp
@@ -106,7 +114,7 @@ module.exports.otpPassword = async (req, res) => {
         email: email
     })
 }
-//[Get]/user/password/otp
+//[Post]/user/password/otp
 module.exports.otpPasswordPost = async (req, res) => {
     const email = req.body.email;
     const otp = req.body.otp;
