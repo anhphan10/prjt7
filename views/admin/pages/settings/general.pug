@@ -1,0 +1,75 @@
+extends ../../layout/default.pug
+include ../../mixins/alert.pug 
+
+block main 
+    h1 Cài Đặt Chung
+
+    +alert-success(5000)
+    +alert-error(5000)
+
+    form(
+        action=`${prefixAdmin}/settings/general?method=PATCH`
+        method= "POST"
+        enctype="multipart/form-data"
+    )
+        div(class="form-group")
+            label(for="websiteName") Tên WebSite
+            input(
+                type="text"
+                class="form-control"
+                id="websiteName"
+                name="websiteName"
+            )
+        div(
+            class="form-group"
+            upload-image
+        )
+            label(for="logo") Logo
+            input(
+                type="file"
+                class="form-control-file"
+                id="logo"
+                name="logo"
+            )
+            img(
+                src="", 
+                class="image-preview"
+                upload-image-preview
+            )
+        div(class="form-group")
+            label(for="phone") Số Điện Thoại
+            input(
+                type="text"
+                class="form-control"
+                id="phone"
+                name="phone"
+            )
+        div(class="form-group")
+            label(for="email") Email
+            input(
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+            )
+        div(class="form-group")
+            label(for="address") Địa Chỉ
+            input(
+                type="text"
+                class="form-control"
+                id="address"
+                name="address"
+            )
+        div(class="form-group")
+            label(for="copyright") Copyright
+            input(
+                type="text"
+                class="form-control"
+                id="copyright"
+                name="copyright"
+            )
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập Nhật     
