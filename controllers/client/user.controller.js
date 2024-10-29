@@ -19,12 +19,12 @@ module.exports.registerPost = async (req, res) => {
         deleted: false
     });
     if (didEmailExist) {
-        req.flash("error", "Không Tìm Thấy Email!");
+        req.flash("error", "Email Đã Tồn Tại!");
         res.redirect("back");
         return;
     }
     req.body.password = await bcrypt.hash(req.body.password, saltRounds);
-    console.log(req.body.password);
+    
 
     const user = new User(req.body);
     await user.save();
