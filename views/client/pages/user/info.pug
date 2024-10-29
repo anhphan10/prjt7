@@ -1,0 +1,38 @@
+extends ../../layout/default.pug 
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-3
+        .row 
+            .col-12
+                +box-head("Thông Tin Tài Khoản")
+        
+            .col-12
+                if (user)
+                div(class="form-group")
+                    label(for="fullName") Họ và Tên
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        name="fullName"
+                        value=user.fullName
+                    )
+                div(class="form-group")
+                    label(for="Email") Email
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="Email"
+                        name="Email"
+                        value=user.email
+                    )
+                div(class="form-group")
+                    label(for="status") Trạng Thái Hoạt Động
+                    input(
+                        type="text"
+                        class="form-control"
+                        id="status"
+                        name="status"
+                        value=user.status
+                    )
