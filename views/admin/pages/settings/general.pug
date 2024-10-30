@@ -8,7 +8,7 @@ block main
     +alert-error(5000)
 
     form(
-        action=`${prefixAdmin}/settings/general?method=PATCH`
+        action=`${prefixAdmin}/settings/general?_method=PATCH`
         method= "POST"
         enctype="multipart/form-data"
     )
@@ -19,6 +19,7 @@ block main
                 class="form-control"
                 id="websiteName"
                 name="websiteName"
+                value=(settingGeneral? settingGeneral.websiteName : "")
             )
         div(
             class="form-group"
@@ -32,7 +33,7 @@ block main
                 name="logo"
             )
             img(
-                src="", 
+                src=(settingGeneral? settingGeneral.logo  : ""), 
                 class="image-preview"
                 upload-image-preview
             )
@@ -43,6 +44,7 @@ block main
                 class="form-control"
                 id="phone"
                 name="phone"
+                value=(settingGeneral? settingGeneral.phone : "")
             )
         div(class="form-group")
             label(for="email") Email
@@ -51,6 +53,7 @@ block main
                 class="form-control"
                 id="email"
                 name="email"
+                value=(settingGeneral? settingGeneral.email : "")
             )
         div(class="form-group")
             label(for="address") Địa Chỉ
@@ -59,6 +62,7 @@ block main
                 class="form-control"
                 id="address"
                 name="address"
+                value=(settingGeneral? settingGeneral.address : "")
             )
         div(class="form-group")
             label(for="copyright") Copyright
@@ -67,6 +71,7 @@ block main
                 class="form-control"
                 id="copyright"
                 name="copyright"
+                value=(settingGeneral? settingGeneral.copyright : "")
             )
         div(class="form-group")
             button(
