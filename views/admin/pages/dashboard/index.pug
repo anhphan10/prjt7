@@ -35,24 +35,24 @@ block main
             .card.mb-4 
                 .card-header  Sản Phẩm
                     .card-body
-                        p Số Lượng: <b>5</b>
-                        p Hoạt Động: <b>3</b>
-                        p Dừng Hoạt Động: <b>1</b>
+                        p Số Lượng: <b>#{statistic.product.total}</b>
+                        p Hoạt Động: <b>#{statistic.product.active}</b>
+                        p Dừng Hoạt Động: <b>#{statistic.product.inactive}</b>
                     
         .col-6
             .card.mb-4 
                 .card-header Tài Khoản Admin
                     .card-body
-                        p Số Lượng: <b>5</b>
-                        p Hoạt Động: <b>3</b>
-                        p Dừng Hoạt Động: <b>1</b>
+                        p Số Lượng: <b>#{statistic.account.total}</b>
+                        p Hoạt Động: <b>#{statistic.account.active}</b>
+                        p Dừng Hoạt Động: <b>#{statistic.account.inactive}</b>
         
         .col-6
             .card.mb-4 
                 .card-header Tài Khoản Client
                     .card-body
-                        p Số Lượng: <b>5</b>
-                        p Hoạt Động: <b>3</b>
-                        p Dừng Hoạt Động: <b>1</b>
+                        p Số Lượng: <b>#{statistic.user.total}</b>
+                        p Hoạt Động: <b>#{statistic.user.active}</b>
+                        p Dừng Hoạt Động: <b>#{statistic.user.inactive}</b>
 
     
