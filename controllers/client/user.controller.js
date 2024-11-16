@@ -3,12 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../../models/user.model")
 const generateHelper = require("../../helpers/generate")
 const ForgotPassword = require("../../models/forgot-password.model")
-<<<<<<< HEAD
-const Cart = require("../../models/cart.model");
-const { cartId } = require("../../middlewares/client/cart.middlewares");
-=======
 const sendMailHelper = require("../../helpers/sendMail")
->>>>>>> pa/feature_sendOTPviaEmail
 //[Get]user/register
 module.exports.register = async (req, res) => {
     res.render("client/pages/user/register", {
