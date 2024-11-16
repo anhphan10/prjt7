@@ -5,7 +5,7 @@ const SettingGeneral = require("../../models/setting-general.model");
 module.exports.settingGeneral = async(req, res, next) =>{
     try {
         let settingGeneral = cache.get("settingGeneral");
-        if(!settingGenera){
+        if(!settingGeneral){
         //If the data does not exist in memory, perform a query in the data base
             const settingGeneral = await SettingGeneral.findOne();
             console.log(settingGeneral.logo);
