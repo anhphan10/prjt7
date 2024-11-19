@@ -1,15 +1,29 @@
-const NodeCache = require("node-cache");
-const cache = new NodeCache({stdTTL:60}); //cache initialization lasts for 1 minute
 const SettingGeneral = require("../../models/setting-general.model");
 
+const cache = {}
+const setCache = (key , value , ttl)=>{
+    const expireAt = Date.now() + ttl;
+    cache[key] = {value , expireAt};
+}
+
+const getCache = (key) => {
+    const cached = cache[key];
+    if(!cached){
+        return;
+    }
+    if(Date.now() > cached.expireAt){
+        delete cache[key];
+        return;
+    }
+    return cached.value;
+}
+const ttl = 60 * 1000;
 module.exports.settingGeneral = async(req, res, next) =>{
     try {
-        let settingGeneral = cache.get("settingGeneral");
+        let settingGeneral = getCache("settingGeneral")
         if(!settingGeneral){
-        //If the data does not exist in memory, perform a query in the data base
             const settingGeneral = await SettingGeneral.findOne();
-            console.log(settingGeneral.logo);
-            cache.set("settingGeneral" , settingGeneral);
+            setCache("settingGeneral" , settingGeneral , ttl);
         }
         else{
             console.log("using cached data")
