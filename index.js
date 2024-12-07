@@ -17,42 +17,44 @@ const router = require("./router/client/index.router");
 const routerAdmin = require("./router/admin/index.router");
 
 
-database.connect();
+(async  () => {
+  await database.connect();
 
-const app = express();
-const port = process.env.Port;
+  const app = express();
+  const port = process.env.PORT;
 
-app.use(methodOverride("_method"));
-app.use(bodyParser.urlencoded({ extended:false }));
+  app.use(methodOverride("_method"));
+  app.use(bodyParser.urlencoded({ extended:false }));
 
-app.set("views", `${__dirname}/views`);
-app.set("view engine", "pug");
+  app.set("views", `${__dirname}/views`);
+  app.set("view engine", "pug");
 
-//flash
-app.use(cookieParser("keyboard cat"));
-app.use(session({cookie:{maxAge: 6000}}));
-app.use(flash());
-//end
+  //flash
+  app.use(cookieParser("keyboard cat"));
+  app.use(session({cookie:{maxAge: 6000}}));
+  app.use(flash());
+  //end
 
-//tynimce
+  //tynimce
 
-app.use('/tinymce' , express.static(path.join(__dirname,'node_modules','tinymce')));
-//end
+  app.use('/tinymce' , express.static(path.join(__dirname,'node_modules','tinymce')));
+  //end
 
 
-app.locals.prefixAdmin = systemConfig.preFixAdmin;
-app.locals.moment = moment;
+  app.locals.prefixAdmin = systemConfig.preFixAdmin;
+  app.locals.moment = moment;
 
-app.use(express.static(`${__dirname}/public`));
+  app.use(express.static(`${__dirname}/public`));
 
-routerAdmin(app);
-router(app);
-app.get("*",(req,res)=>{
-  res.render("client/pages/error/404",{
-    pageTitle:"404 Not Found"
+  routerAdmin(app);
+  router(app);
+  app.get("*",(req,res)=>{
+    res.render("client/pages/error/404",{
+      pageTitle:"404 Not Found"
+    })
   })
-})
 
-app.listen(port , () => {
-  console.log(`App listenning on port ${port}`);
-});
+  app.listen(port , () => {
+    console.log(`App listenning on port ${port}`);
+  });
+})();
