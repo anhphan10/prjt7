@@ -20,7 +20,7 @@ module.exports.index = async (req , res) => {
    const newProductsNew = producthelper.priceNewProducts(productsNew)
      
      res.render("client/pages/home/index.pug" , {
-        pageTitle:"Trang chủ",
+        pageTitle:"Trang Chủ",
         productsFeatured: newProductsFeatured,
         productsNew: newProductsNew
     });
