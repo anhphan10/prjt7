@@ -4,21 +4,20 @@ const Role = require("../../models/roles.model")
 module.exports.requireAuth = async (req, res, next) => {
 
     if (!req.cookies.token) {
-        console.log("no token found")
         res.redirect(`${systemConfix.preFixAdmin}/auth/login`)
     }
     else {
         const user = await Account.findOne({
             token: req.cookies.token
         })
-        if (!user) { 
+        if (!user) {
             res.clearCookie("token");
             res.redirect(`${systemConfix.preFixAdmin}/auth/login`)
-           
+
         }
         else {
             const role = await Role.findOne({
-              _id: user.role_id
+                _id: user.role_id
             }).select("title permissions");
 
             res.locals.user = user;
