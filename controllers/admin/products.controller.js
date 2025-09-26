@@ -313,7 +313,7 @@ module.exports.editPatch = async (req, res) => {
       } catch (erorr) {
          req.flash("error", " Cập nhật thất bại")
       }
-      res.redirect("back")
+      res.redirect(`${systemConFig.preFixAdmin}/products`)
    }
    else {
       res.send("403")
