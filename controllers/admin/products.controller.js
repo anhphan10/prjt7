@@ -108,11 +108,7 @@ module.exports.changeStatus = async (req, res) => {
    else {
       res.send("403")
    }
-
-
-
 }
-
 
 //[patch]/admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
