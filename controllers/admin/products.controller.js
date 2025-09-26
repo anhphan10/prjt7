@@ -10,14 +10,10 @@ const Account = require("../../models/account.model")
 
 // [Get]/admin/products
 module.exports.index = async (req, res) => {
-
    const filterStatus = filterStatusHelper(req.query);
-
-
    let find = {
       deleted: false,
    };
-
    if (req.query.status) {
       find.status = req.query.status;
    }
@@ -27,7 +23,6 @@ module.exports.index = async (req, res) => {
    if (objectSearch.regex) {
       find.title = objectSearch.regex;
    }
-
    //pagination
    const countProducts = await Product.countDocuments(find);
    let objectPagination = paginationHelper(
@@ -50,8 +45,6 @@ module.exports.index = async (req, res) => {
       sort.position = "asc";
    }
    //End Sort
-
-
    const products = await Product.find(find)
       .sort(sort)
       .limit(objectPagination.limitItems)
@@ -76,11 +69,8 @@ module.exports.index = async (req, res) => {
          const userUpdated = await Account.findOne({
             _id: updatedBy.account_id
          })
-
          updatedBy.accountFullName = userUpdated.fullName
       }
-
-
    }
    // console.log(products);
    res.render("admin/pages/products/index", {
@@ -188,11 +178,7 @@ module.exports.deleteItem = async (req, res) => {
    catch (error) {
       req.flash("error", "Xoa That Bai")
    }
-
-
    res.redirect("back")
-
-
 }
 //[Get]/admin/products/create
 module.exports.create = async (req, res) => {
@@ -200,11 +186,8 @@ module.exports.create = async (req, res) => {
    let find = {
       deleted: false
    };
-
    const category = await ProductCategory.find(find);
    const newCategory = createTreeHelper.tree(category)
-
-
    res.render("admin/pages/products/create", {
       pageTitle: "Thêm Mới Sản Phẩm",
       category: newCategory
@@ -212,9 +195,7 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.createPost = async (req, res) => {
-
    const permissions = res.locals.role.permissions;
-
    if (permissions.includes("product_create")) {
       req.body.price = parseInt(req.body.price)
       req.body.discountPercentage = parseInt(req.body.discountPercentage)
@@ -248,8 +229,6 @@ module.exports.createPost = async (req, res) => {
 
 // [Get]/admin/products/edit/:id
 module.exports.edit = async (req, res) => {
-
-
    try {
       const find = {
          deleted: false,
@@ -275,11 +254,6 @@ module.exports.edit = async (req, res) => {
       res.redirect(`${systemConFig.preFixAdmin}/products`);
    }
 }
-
-
-
-
-
 //[Patch]/admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
    const permissions = res.locals.role.permissions
@@ -301,8 +275,6 @@ module.exports.editPatch = async (req, res) => {
             account_id: res.locals.user.id,
             updatedAt: new Date()
          }
-
-
          await Product.updateOne({
             _id: id
          }, {
@@ -318,7 +290,6 @@ module.exports.editPatch = async (req, res) => {
    else {
       res.send("403")
    }
-
    // res.send("OK")
 };
 
@@ -330,10 +301,8 @@ module.exports.detail = async (req, res) => {
          deleted: false,
          _id: req.params.id
       }
-
       const product = await Product.findOne(find);
       // console.log(product)
-
       res.render("admin/pages/products/detail",
          {
             pageTitle: product.title,
@@ -343,7 +312,6 @@ module.exports.detail = async (req, res) => {
    catch (erorr) {
       res.redirect(`${systemConFig.preFixAdmin}/products`);
    }
-
 }
 
 
